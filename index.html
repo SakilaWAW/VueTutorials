@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/index.css">
+  <title>Document</title>
+</head>
+<body>
+  <h3>第一章:核心概览</h3>
+  <div id="app1">
+    {{message}}
+  </div>
+  <div id="app2">
+    <div v-bind:title="message">
+      v-bind使用--悬停查看信息
+    </div>
+  </div>
+  <div id="app3">
+    <p v-if="seen">Can you see me?</p>
+  </div>
+  <div id="app4">
+    <ol>
+      <li v-for="todo in todos">
+        {{ todo.text }}
+      </li>
+    </ol>
+  </div>
+  <div id="app5">
+    <p>{{ message }}</p>
+    <button @click="reverse">逆转!</button>
+  </div>
+  <div id="app6">
+    <p>{{ message }}</p>
+    <input v-model="message">
+  </div>
+  <div id="app7">
+    <ol>
+      <todo-item></todo-item>
+      <todo-item></todo-item>
+      <todo-item></todo-item>
+      <todo-item></todo-item>
+    </ol>
+  </div>
+  <div id='app8'>
+    <ol>
+      <shopping-item
+        v-for="item in shoppingList"
+        v-bind:todo="item"
+        v-bind:key="item.id">
+      </shopping-item>
+    </ol>
+  </div>
+  <h3>第二章:Vue实例</h3>
+  <div id="app9">
+    {{ message }}
+    <button @click="changeVal">change</button>
+  </div>
+  <div id="app10">
+    {{ message }}
+    <button @click="reverseMessage">reverse!</button>
+  </div>
+  <h3>第三章:模板语法</h3>
+  <div id="app11">
+    <div v-html="rawHtml"></div>
+  </div>
+  <div id="app12">
+    <div :style="{color: textColor}">{{ message }}</div>
+  </div>
+  <div id="app13">
+    {{ ok ? 'Yes' : 'no' }}
+  </div>
+  <div id="app14">
+    {{ message | lowerCase }}
+    <div :id="rawId | formatId"></div>
+  </div>
+  <h3>第四章:计算属性</h3>
+  <div id="app15">
+    <p>this is origin message: {{ message }}</p>
+    <p>this is computed message: {{ computedMessage }}</p>
+    <p>this is methods same as computed: {{ methodMessage() }}</p>
+    <p>computed vs methods computed Date: {{ computedDate }}</p>
+    <p>computed vs methods method Date: {{ methodDate() }}</p>
+    <button @click="reverseMessage">reverse!</button>
+  </div>
+  <div id="app16">
+    <p>watch vs computed: watch {{ fullname }}</p>
+    <p>watch vs computed: computed {{ computedFullname }}</p>
+    <button @click="reverseFirstName">change first name</button>
+    <button @click="reverseLastName">change last name</button>
+  </div>
+  <div id="app17">
+    <p>FirstName: {{ firstName }}</p>
+    <p>LastName: {{ lastName }}</p>
+    <p>FullName: {{ fullName }}</p>
+    <button @click='reverseFirstName'>reverse first name</button>
+    <button @click='reverseLastName'>reverse last name</button>
+    <button @click='reverseFullName'>reverse full name</button>
+  </div>
+  <div id="app18">
+    Ask me a question please.
+    <input v-model="question">
+    <p>{{ answer }}</p>
+  </div>
+  <h3>第五章:Class与Style绑定</h3>
+  <div id="app19">
+    <div :class="{primaryColor: isPrimaryColor, boldFont: isBold}">A</div>
+    <div :class="classObject">B</div>
+    <div :class="[primaryColor, boldFont]">C</div>
+    <div :class="[isPrimaryColor?primaryColor:'',boldFont]">D</div>
+    <div :class="[{primaryColor: isPrimaryColor}, boldFont]">E</div>
+  </div>
+  <div id="app20">
+    <div :style="{color: primaryColor, fontSize: fontSize}">A</div>
+    <div :style="styleObject">B</div>
+    <div :style="[styleObject1, styleObject2]">C</div>
+    <div :style="[isPrimaryColor?styleObject1:'',styleObject2]">D</div>
+  </div>
+  <script src="scripts/vue.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>
+  <script src="scripts/index.js" charset="utf-8"></script>
+</body>
+</html>
