@@ -134,6 +134,46 @@
     </template>
     <button @click="changeWay">change login way</button>
   </div>
+  <h3>第七章:列表渲染</h3>
+  <div id="app23">
+    <ol>
+      <li v-for="(value,key,index) in obj">
+        <p>{{ key }}: {{ value }} - {{ index }}</p>
+      </li>
+    </ol>
+  </div>
+  <div id="app24">
+    <input
+      v-model="inputValue"
+      placeholder="Idsanput shopping item."
+      @keyup.enter="insertItem">
+    <ol>
+      <li
+        is="list-item"
+        v-for="(item,index) in shoppingList"
+        :item="item"
+        :index="index"
+        :key="index"
+        @remove="shoppingList.splice(index,1)">
+      </li>
+    </ol>
+  </div>
+  <div id="app25">
+    <div v-for="item in itemList" :key="item.id">
+      <input :placeholder="item.text">
+    </div>
+    <button @click="popAndShift">change</button>
+  </div>
+  <div id="app26">
+    <label>使用计算属性:</label>
+    <ol>
+      <li v-for="n in evenNumbers">{{ n }}</li>
+    </ol>
+    <label>使用方法:</label>
+    <ol>
+      <li v-for="m in even(numbers)">{{ m }}</li>
+    </ol>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

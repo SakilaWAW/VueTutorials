@@ -552,3 +552,125 @@ v22 = new Vue({
  *
  * 总的来说:v-if切换开销大，v-show初始化开销大，运行时改变多用v-if，改变少就用v-show。
  */
+
+/**
+ * 第七章 列表渲染
+ * 7.1 基础语法
+ * 列表的渲染主要靠`v-for`，值为特殊语法:`item in items`的形式，items为数组名，item为每个值，item可以写为(item,index),index为下标。也可以用of代替in，更好一点。
+ *
+ * 同样可以用template来做一组节点的循环，同v-if。
+ **/
+
+/**
+ * 7.2 object属性循环
+ * v-for还可以用来循环对象属性，用起来基本和循环列表相同，唯一的不同就是对象循环可以提供最多三个参数(当然也可以2个1个):`(value,key,index) in obj`
+ *
+ * @type {Vue}
+ */
+var v23 = new Vue({
+  el: '#app23',
+  data: {
+    obj: {
+      name: '2b',
+      type: '2e'
+    }
+  }
+});
+
+/**
+ * 7.3 整数迭代
+ * 只迭代整数也是可以的，如`n in 10`，n会从1到10循环。
+**/
+
+/**
+ * 7.4 组件+v-for
+ * vue为了减少父组件与子组件的耦合，隔离了父子组件的作用域。用props这个属性来传递变量，打开一个变量的通道，减少耦合。？？？
+ *
+ * 有的DOM元素限制子元素的类型，不能直接用自定义组件，这时候用is来解决问题，如下。
+ *
+ * > 注意data中要循环的是数组，用[]才对。
+ *   凡是名字中带-的属性名，都要加引号。
+ * @type {String}
+**/
+Vue.component('list-item', {
+  template: '<li>{{ item.text }}<button @click="$emit(\'remove\')">X</button></li>',
+  props: ['item']
+});
+
+var v24 = new Vue({
+  el: '#app24',
+  data: {
+    inputValue: '',
+    shoppingList: [
+      { text: 'mouse'},
+      { text: 'keyboard'},
+      { text: 'graphic card'}
+    ]
+  },
+  methods: {
+    insertItem: function(){
+      this.shoppingList.push({text: this.inputValue});
+      //加入后清空
+      this.inputValue = '';
+    }
+  }
+});
+
+/**
+ * 7.5 v-for和key
+ * Vue会在列表数据项顺序改变的时候单纯复用控件并改变顺序，注意其中的内容顺序是不会变得，只是换了个组件顺序，这通常不是我们想要的。如果不想复用的话请用:key绑定key属性使每一项的key是唯一值。这样在换组件顺序的时候内容也会跟着组件走。如果追求高性能而且不会造成bug的话还是可以故意不加key的。
+ *
+ * > key属性不止用在v-for中，本质是控制控件复用与否的一种机制。
+**/
+var v25 = new Vue({
+  el: '#app25',
+  data: {
+    itemList: [
+      {text:'A', id:0},
+      {text:'B', id:1},
+      {text:'C', id:2}
+    ]
+  },
+  methods: {
+    popAndShift: function(){
+      let item = this.itemList.pop();
+      this.itemList.unshift(item);
+    }
+  }
+});
+
+/**
+ *  7.6 数组方法监听
+ *  一些数组方法是直接改变数组本身的，这些方法也会触发视图更新，他们是:`push(),pop(),shift(),unshift(),splice(),sort(),reverse()`
+ *
+ * 另一些方法并不会改变原数组数据，我们一般会这么用:`xx=xx.filter(...)`，看起来开销很大，但vue对这种赋值有优化，所以也是很高效的，不用担心。
+ *
+ * 特例:`vm.items[indexOfItem]=newValue`和`vm.items.length = newLength`这两个数组操作并不会触发视图更新，谨记。可用set()和splice()代替。
+ */
+
+/**
+ * 7.7 v-for表达式的写法
+ * `n in xxx`，xxx也可以是计算属性或方法，这在处理数据比较复杂的时候很有用。
+ *
+ * @type {Vue}
+ */
+var v26 = new Vue({
+  el: '#app26',
+  data: {
+    numbers: [0,1,2,3,4,5,6,7,8,9,10]
+  },
+  computed: {
+    evenNumbers: function(){
+      return this.numbers.filter((val)=>{
+        return val % 2 === 1;
+      })
+    }
+  },
+  methods: {
+    even: function(numberArr){
+      return numberArr.filter((val)=>{
+        return val % 2 === 1;
+      });
+    }
+  }
+});
