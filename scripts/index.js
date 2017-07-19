@@ -674,3 +674,32 @@ var v26 = new Vue({
     }
   }
 });
+
+/**
+ * 第八章 事件处理
+ */
+
+/**
+ * 8.1 基本用法
+ * 事件绑定基本用法很简单:`v-on:xxx.xxx=""`(简写@xxx.xxx="")，值一般是一个方法名，在methods中定义，或者如果足够简单可以直接把js语句写在值中，如`="count+=1"`。
+ * 如果使用方法名的形式:
+ * 1. 可以直接写个名字如`say`，在调用方法的时候会自动加一个event参数代表DOM事件，在定义的时候可以+event参数。
+ * 2. 可以用js表达式的形式，如`say(xxx)`。在定义方法的时候也可以对应加入参数。也可以手动传入event，格式为`say(...,$event)`，同样在定义方法的时候对应写。
+**/
+var v27 = new Vue({
+  el: '#app27',
+  data: {
+    count: 0,
+    step: 0
+  },
+  methods: {
+    addCounter: function(event){
+      alert(event.toString());
+      this.count += 1;
+    },
+    addStep: function(event){
+      alert(event.toString());
+      this.count += Number(this.step);
+    }
+  }
+});
