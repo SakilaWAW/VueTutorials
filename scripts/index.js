@@ -470,7 +470,7 @@ var v19 = new Vue({
  * 同样在数组表达中也可以用三元表达式，不过个人认为这样写成计算属性更好。
  *
  * > 使用:style绑定css属性时，vue会自动添加必要的前缀，方便。在2.3.0版本之后可以用`{xx:['xxx','yyy','zzz']}`来传入多个属性选项，vue会根据浏览器支持情况选择，浏览器兼容!很好。
- * 
+ *
  * @type {Vue}
  */
 var v20 = new Vue({
@@ -497,3 +497,58 @@ var v20 = new Vue({
     }
   }
 });
+
+/**
+ * 第六章 条件渲染
+ * 6.1.1 v-if基本用法
+ * 用法为`v-if='xx'`，在vue对象data中设置xx，同样也可以在计算属性中设置，不过计算属性设计初衷是为了复杂的计算并且会自动绑定计算中使用的属性，这个要注意。如果时简单的计算可以直接写在表达式中，和插值+js表达式规则相似。
+ *
+ * 同样也有`v-else`和`v-else-if`(2.1.0新增)，这两个用法和普通的循环语句一样，很好记。
+ *
+ * @type {Vue}
+ */
+var v21 = new Vue({
+  el: '#app21',
+  data: {
+    hasTitle: true,
+    calResult: 0.1
+  },
+  computed: {
+    hasContent: function(){
+      //复杂的计算过程
+      return this.calResult > 0.5;
+    }
+  }
+});
+
+/**
+ * 6.1.2 v-if+template
+ * 可以用template+v-if实现多个节点同时(不)显示，具体用法为`<template v-if="seen">多个节点</template>`
+ */
+
+/**
+ * 6.2 tag属性`key`的作用
+ * 由于Vue追求高效所以尽量复用节点，如果两种状态切换可以复用节点vue就会复用，导致一个数据遗留的问题，比如两个input复用，其中的数据就会保留下来，为了避免这种情况，可以在不想复用的节点中加入key属性来指明节点名，这样节点就有了唯一性，就不会被复用了。
+ *
+ * @type {Vue}
+ */
+v22 = new Vue({
+  el: '#app22',
+  data: {
+    loginWay: 'username'
+  },
+  methods: {
+    changeWay: function(){
+      this.loginWay = this.loginWay === 'username'?'email':'username';
+    }
+  }
+});
+
+/**
+ * 6.3 v-if与v-show对比
+ * v-if和v-show都可以做到条件隐藏的效果，但是他俩实现上很不一样:
+ * - v-if是惰性的，开始只渲染该显示的节点，之后做切换时在适当的销毁重建节点。
+ * - v-show本质是在一开始就不管显不显示都渲染上，之后做切换时只改变css中的display属性达到切换的效果。
+ *
+ * 总的来说:v-if切换开销大，v-show初始化开销大，运行时改变多用v-if，改变少就用v-show。
+ */

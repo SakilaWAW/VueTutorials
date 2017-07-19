@@ -117,6 +117,23 @@
     <div :style="[styleObject1, styleObject2]">C</div>
     <div :style="[isPrimaryColor?styleObject1:'',styleObject2]">D</div>
   </div>
+  <h3>第六章:条件渲染</h3>
+  <div id="app21">
+    <p v-if="hasTitle">title</p>
+    <p v-else-if="hasContent">content</p>
+    <p v-else>nothing</p>
+  </div>
+  <div id="app22">
+    <template v-if="loginWay === 'username'">
+      <label>userName:</label>
+      <input placeholder="enter your username" key="usernameInput">
+    </template>
+    <template v-else-if="loginWay === 'email'">
+      <label>email:</label>
+      <input placeholder="enter your email" key="emailInput">
+    </template>
+    <button @click="changeWay">change login way</button>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>
