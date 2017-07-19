@@ -713,7 +713,7 @@ var v27 = new Vue({
 
 /**
  * 8.3 键盘/鼠标事件设置
- * 形如`@keyup.alt.67`，我们可以在后面串联按键以绑定事件到快捷键上，一些常用的按键如.alt.shift.enter.ctrl.space.esc.tab.up.down.right.left.delete都是默认的简写，可以直接使用，其他的键对应的是大写的ascii码，可以自由组合。@keyup可以是@click一类的。
+ * 形如`@keyup.alt.67`，我们可以在后面串联按键以绑定事件到快捷键上，一些常用的按键如.alt.shift.enter.ctrl.space.esc.tab.up.down.right.left.delete都是默认的简写，可以直接使用，其他的键对应的是大写的ascii码，可以自由组合。@keyup可以是@click一类的。(推测控件要获得焦点才能响应事件，所以多用input控件。)
  *
  * > Vue追求在methods中关注数据逻辑而不是DOM事件，所以将这些方法的绑定都写在html中。
  * @type {Vue}
