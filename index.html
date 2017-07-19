@@ -182,6 +182,12 @@
     <input v-model="step" placeholder="please input step">
     <button @click="addStep($event)">addStep</button>
   </div>
+  <div id="app28">
+    <label>点击ctrl+enter使数字+1</label>
+    <input v-model="count" @keyup.ctrl.enter="addOne"><br/>
+    <label>点击ctrl+f1使数字+1</label>
+    <input v-model="count" @keyup.ctrl.f1="addOne">
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

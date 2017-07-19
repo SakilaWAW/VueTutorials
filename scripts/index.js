@@ -703,3 +703,35 @@ var v27 = new Vue({
     }
   }
 });
+
+/**
+ * 8.2 事件修饰符
+ * 在DOM体系中，我们可以用event.preventDefault()或event.stopPropagation()等一系列方法来控制时间。？？？几种的意思？？？vue提倡methods中只有纯粹的数据逻辑，所以这种控制事件的方法Vue提供了方法可以写在html中，分别是`.stop`，`.prevent`,`.capture`,`self`,`once`。用法如`@click.stop.prevent`可以串联，但是执行方法是按照书写顺序来的。
+ *
+ * > `.once`属性在2.1.4版本后可以添加到自定义组件上。
+ */
+
+/**
+ * 8.3 键盘/鼠标事件设置
+ * 形如`@keyup.alt.67`，我们可以在后面串联按键以绑定事件到快捷键上，一些常用的按键如.alt.shift.enter.ctrl.space.esc.tab.up.down.right.left.delete都是默认的简写，可以直接使用，其他的键对应的是大写的ascii码，可以自由组合。@keyup可以是@click一类的。
+ *
+ * > Vue追求在methods中关注数据逻辑而不是DOM事件，所以将这些方法的绑定都写在html中。
+ * @type {Vue}
+ */
+var v28 = new Vue({
+  el: '#app28',
+  data: {
+    count: 0
+  },
+  methods: {
+    addOne: function(){
+      this.count += 1;
+    }
+  }
+});
+
+/**
+ * > 可以用此方式自定义按键简写。
+ * @type {Number}
+ */
+Vue.config.keyCodes.f1 = 112;
