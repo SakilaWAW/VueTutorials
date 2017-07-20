@@ -242,15 +242,24 @@
     <p>.Trim结果: {{ msgTrim }}</p>
   </div>
   <h3>第十章:组件</h3>
-<!--<div id="app29">
+  <div id="app31">
     <p>{{ message }}</p>
     <my-component :message="message"></my-component>
     <local-component :message="message"></local-component>
   </div>
-  <div id="app30">
+  <div id="app32">
     <child :my-message="message"></child>
   </div>
--->
+  <div id="app33">
+    <my-component></my-component>
+    <my-component></my-component>
+    <my-component></my-component>
+  </div>
+  <div id="app34">
+    <parent-child :init-count="initCount"></parent-child>
+    <parent-child :init-count="initCount"></parent-child>
+    <p>app34.initCount={{ initCount }}</p>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

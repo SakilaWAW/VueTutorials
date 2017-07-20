@@ -816,8 +816,8 @@ var Child = {
   template: '<p>{{ message }}</p>'
 };
 
-var v29 = new Vue({
-  //el: '#app40',
+var v31 = new Vue({
+  el: '#app31',
   data: {
     message: 'component message',
   },
@@ -846,6 +846,8 @@ var v29 = new Vue({
  *
  * > 记住一条规律:props和字符串模板中使用驼峰命名法，在v-bind:xxx中让xxx使用段横杠的表达形式，会自动转换成正确的。
  *
+ * > 在使用props传值的时候，如果是`xx="1"`则会直接传入字符串'1'，要想传入数字1要用`:xx="1"`，这样引号内的内容会被当做js表达式来计算。
+ *
  * @type {Object}
  */
 var Child = {
@@ -853,12 +855,73 @@ var Child = {
   template: '<p>{{ myMessage }}</p>'
 };
 
-var v30 = new Vue({
-  //el: "#app41",
+var v32 = new Vue({
+  el: "#app32",
   data: {
     message: 'bravo!'
   },
   components: {
     child: Child
+  }
+});
+
+/**
+ * 10.4 自定义组件中的data
+ * 要注意的是组件中的data必定是个函数而不是对象，如果是对象的话会导致所有相同的组件本质都公用一个data，只是不同的引用而已，到时候就一荣俱荣一损俱损了。
+ *
+ * 深入探讨一下，其实这是由于js的原型链模型导致的，我们定义一个组件的时候相当于初始化了一个prototype对象。
+ * 不同于传统的面向对象语言，js中new对象的时候实际是并不会拷贝属性，而是在访问的时候通过原型链模型向上寻找。所以说如果这里data如果定义的是一个对象，那么我们在后面使用自定义组件的时候，所创建的组件对象中的data就只是一个指向原型对象data的引用，如果对其更改，就相当于将原型中的data更改了，以至于所有的组件对象都被更改了，这样是不可取的。
+ * 在传统js程序中，如果我们不想所有对象公用一个属性，通常会:
+ * ```javascript
+ * xx.prototype.data = function(){
+ *  return { a:0, b:1};
+ * }
+ * ```
+ * 如何，语法上是不是很相似。
+ *
+ * @type {Object}
+ */
+var myComponent = {
+  template: '<button @click="counter+=1">{{ counter }}</button>',
+  data: function(){
+    return { counter:0 };
+  }
+}
+
+var v33 = new Vue({
+  el: '#app33',
+  components: {
+    'my-component': myComponent
+  },
+});
+
+/**
+ * 10.5 单项数据流
+ * 在Vue中不做特殊处理的话是单项数据流，即改变父组件数据子组件跟着变，反之不成立，这样利于程序健壮性。所以在子组件中一定不要改变props本身的值，特别是props为一个对象的时候！最佳的做法就是要用什么变量的话酌情用data或computed变量拷贝出来使用，保证操作的都是拷贝的对象不会影响原来的props即可。
+ *
+ * @type {Object}
+ */
+var parentChild = {
+  props: ['initCount'],
+  template: '<button @click="count+=1;">{{ count }}mod 3={{ modThree}}</button>',
+  data: function(){
+    return {
+      count: this.initCount
+    };
+  },
+  computed: {
+    modThree: function(){
+      return this.count % 3;
+    }
+  }
+}
+
+var v34 = new Vue({
+  el: '#app34',
+  data: {
+    initCount: 3
+  },
+  components: {
+    'parent-child': parentChild
   }
 });
