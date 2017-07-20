@@ -735,3 +735,81 @@ var v28 = new Vue({
  * @type {Number}
  */
 Vue.config.keyCodes.f1 = 112;
+
+/**
+ * 第九章:组件
+ * 组件是Vue的核心功能，它提供了很强的扩展性，将页面分割成一个个组件，清晰数据流，降低页面元素之间的耦合性。
+ */
+
+/**
+ * 9.1 基本语法
+ * 9.1.1 全局声明
+ * 如下为全局声明自定义组件的方式，注册要在建立Vue对象之前。
+ *
+ * > 之前也提到过父子组件之间的作用域是不相通的，如果子组件想用父组件的属性，请用props在子组件中声明变量名，并在子组件标签内用v-bind语法绑定声明的变量，这样就把父组件内的属性传进来了，之后想怎么用都可以了。
+ *
+ * > 用props传入的属性是单项绑定的，改变父组件的这个变量，子组件会更新，反之不会。这是为了防止在子组件内误操作改变父组件数据。
+ *
+ * @type {Array}
+ */
+Vue.component('my-component', {
+  props: ['message'],
+  template: '<p>{{ message }}</p>'
+});
+
+/**
+ * 9.1.2 局部声明
+ * 如下方式可以局部声明自定义组件，这样只有在此Vue对象范围内才可以使用，其他同全局声明。
+ * @type {Object}
+ */
+var Child = {
+  props: ['message'],
+  template: '<p>{{ message }}</p>'
+};
+
+var v29 = new Vue({
+  el: '#app29',
+  data: {
+    message: 'component message',
+  },
+  components: {
+    'local-component': Child
+  }
+});
+
+/**
+ * 9.2 is的使用
+ * 见app24。另外在有些字符串模板中:
+ * 1. <script type="text/x-template">
+ * 2. JavaScript 内联模版字符串
+ * 3. .vue 组件
+ * 是不需要用is的，没有子标签限制。所以尽量使用这些字符串模板来避免is。
+ *
+ * > 字符串模板的含义是通过template属性生成的模板。
+ * > 使用绑定的意义是可以方便的动态改值，但是直接使用属性赋值也是可以的!当然如果想传入非string类型的值也要用绑定，值会被解析为js表达式。
+ */
+
+/**
+ * 9.3 props中的属性名格式转换
+ * 由于在进行props绑定的时候:myMessage会全部转换为小写，所以请转换为my-message，这样在传到自定义组件的名字会转换为myMessage，不然无法传入正确的名字。自定义组件内还是正常使用，毫无影响。
+ *
+ * > 字符串模板不能用短横杠形式，所以催生出了这种特殊转换。
+ *
+ * > 记住一条规律:props和字符串模板中使用驼峰命名法，在v-bind:xxx中让xxx使用段横杠的表达形式，会自动转换成正确的。
+ *
+ * @type {Object}
+ */
+var Child = {
+  props: ['myMessage'],
+  template: '<p>{{ myMessage }}</p>'
+};
+
+var v30 = new Vue({
+  el: "#app30",
+  data: {
+    message: 'bravo!'
+  },
+  components: {
+    child: Child
+  }
+});
