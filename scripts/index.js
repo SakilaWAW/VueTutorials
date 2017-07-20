@@ -737,13 +737,62 @@ var v28 = new Vue({
 Vue.config.keyCodes.f1 = 112;
 
 /**
- * 第九章:组件
+ * 第九章:表单控件绑定
+ * 尽管有些神奇，但 v-model 本质上不过是语法糖，它负责监听用户的输入事件以更新数据，并特别处理一些极端的例子。
+ *
+ * 9.1 各控件的绑定
+ *
+ * > label标签的for属性值指向某个input元素的id，当点击label的时候会触发该input元素。
+ * > 绑定单个复选框和多个复选框的差别在于data中的数据是字符串还是数组。
+ * > 凡是带选项标签option的，默认value就是文本本身，如无需求可以省略。
+ * > 下拉选择框写一个未选择项设置为disable是推荐的写法。
+ * > 永远不要忘了v-bind，这个绑定方式是vue里通用的动态绑定属性的方式，当然在各种表单控件中也可以使用。
+ * > option的value是可以绑定对象的，不光是可以绑定值。
+ * > 复选框还有:true-value='a',:false-value='b'的用法。即选中时和未选中时的value可以改变。
+ */
+var v29 = new Vue({
+  el: '#app29',
+  data: {
+    textData: '',
+    multilineTextData: '',
+    checkboxArr: [],
+    radioboxData: '',
+    choiceListResult: '',
+    multipleListResult: [],
+    loopSelected: '',
+    options: [
+      { title:'西城', value:'XiCheng'},
+      { title:'东城', value:'DongCheng'},
+      { title:'朝阳', value:'ChaoYang'}
+    ]
+  }
+});
+/**
+ * 9.2 v-model修饰符
+ *
+ * 语法糖，可以简便的加入一些特殊功能:
+ * .lazy:转换为在change实践中而不是input事件中更新，即在回车的时候更新data。
+ * .number:自动将用户的输入转换为number。
+ * .trim:自动过滤用户输入，去掉首尾的空格。
+ *
+ * @type {Array}
+ */
+var v30 = new Vue({
+  el: '#app30',
+  data: {
+    msgLazy: '',
+    msgNumber: 0,
+    msgTrim: ''
+  }
+});
+/**
+ * 第十章:组件
  * 组件是Vue的核心功能，它提供了很强的扩展性，将页面分割成一个个组件，清晰数据流，降低页面元素之间的耦合性。
  */
 
 /**
- * 9.1 基本语法
- * 9.1.1 全局声明
+ * 10.1 基本语法
+ * 10.1.1 全局声明
  * 如下为全局声明自定义组件的方式，注册要在建立Vue对象之前。
  *
  * > 之前也提到过父子组件之间的作用域是不相通的，如果子组件想用父组件的属性，请用props在子组件中声明变量名，并在子组件标签内用v-bind语法绑定声明的变量，这样就把父组件内的属性传进来了，之后想怎么用都可以了。
@@ -758,7 +807,7 @@ Vue.component('my-component', {
 });
 
 /**
- * 9.1.2 局部声明
+ * 10.1.2 局部声明
  * 如下方式可以局部声明自定义组件，这样只有在此Vue对象范围内才可以使用，其他同全局声明。
  * @type {Object}
  */
@@ -768,7 +817,7 @@ var Child = {
 };
 
 var v29 = new Vue({
-  el: '#app29',
+  //el: '#app40',
   data: {
     message: 'component message',
   },
@@ -778,7 +827,7 @@ var v29 = new Vue({
 });
 
 /**
- * 9.2 is的使用
+ * 10.2 is的使用
  * 见app24。另外在有些字符串模板中:
  * 1. <script type="text/x-template">
  * 2. JavaScript 内联模版字符串
@@ -790,7 +839,7 @@ var v29 = new Vue({
  */
 
 /**
- * 9.3 props中的属性名格式转换
+ * 10.3 props中的属性名格式转换
  * 由于在进行props绑定的时候:myMessage会全部转换为小写，所以请转换为my-message，这样在传到自定义组件的名字会转换为myMessage，不然无法传入正确的名字。自定义组件内还是正常使用，毫无影响。
  *
  * > 字符串模板不能用短横杠形式，所以催生出了这种特殊转换。
@@ -805,7 +854,7 @@ var Child = {
 };
 
 var v30 = new Vue({
-  el: "#app30",
+  //el: "#app41",
   data: {
     message: 'bravo!'
   },

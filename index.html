@@ -188,8 +188,61 @@
     <label>点击ctrl+f1使数字+1</label>
     <input v-model="count" @keyup.ctrl.f1="addOne">
   </div>
-  <h3>第九章:组件</h3>
+  <h3>第九章:表单控件绑定</h3>
   <div id="app29">
+    <h5>文本:</h5>
+    <input v-model="textData" placeholder="输入文本">
+    <p>输入值为:{{ textData }}</p>
+    <h5>多行文本:</h5>
+    <textarea v-model="multilineTextData" placeholder="输入多行文本"></textarea>
+    <p>输入的多行文本为:{{ multilineTextData }}</p>
+    <h5>复选框:</h5>
+    <input type="checkbox" id="choice1" v-model="checkboxArr" value="choice1">
+    <label for="choice1">choice1</label>
+    <input type="checkbox" id="choice2" v-model="checkboxArr" value="choice2">
+    <label for="choice2">choice2</label>
+    <input type="checkbox" id="choice3" v-model="checkboxArr" value="choice3">
+    <label for="choice3">choice3</label>
+    <p>选择的值为:{{ checkboxArr }}</p>
+    <h5>单选按钮:</h5>
+    <input type="radio" id="radioYes" value="yes" v-model="radioboxData">
+    <label for="radioYes">Yes</label>
+    <input type="radio" id="radioNo" value="no" v-model="radioboxData">
+    <label for="radioNo">No</label>
+    <input type="radio" id="radioNotSure" value="not sure" v-model="radioboxData">
+    <label for="radioNotSure">Not sure</label>
+    <p>选择的值为:{{ radioboxData }}</p>
+    <h5>选择列表:</h5>
+    <select v-model="choiceListResult">
+      <option value="" disabled>请选择</option>
+      <option>西城</option>
+      <option>东城</option>
+      <option>朝阳</option>
+    </select>
+    <p>选择的值为: {{ choiceListResult }}</p>
+    <h5>多选列表:</h5>
+    <select multiple v-model="multipleListResult">
+      <option>西城</option>
+      <option>东城</option>
+      <option>朝阳</option>
+    </select>
+    <p>选择的值为:{{ multipleListResult }}</p>
+    <h5>循环渲染:</h5>
+    <select v-model="loopSelected">
+      <option v-for="option in options" :value="option.value">{{ option.title }}</option>
+    </select>
+    <p>选择为: {{ loopSelected }}</p>
+  </div>
+  <div id="app30">
+    <input v-model.lazy="msgLazy">
+    <input v-model.number="msgNumber">
+    <input v-model.trim="msgTrim">
+    <p>.Lazy结果: {{ msgLazy }}</p>
+    <p>.Number结果: {{ msgNumber }}</p>
+    <p>.Trim结果: {{ msgTrim }}</p>
+  </div>
+  <h3>第十章:组件</h3>
+<!--<div id="app29">
     <p>{{ message }}</p>
     <my-component :message="message"></my-component>
     <local-component :message="message"></local-component>
@@ -197,6 +250,7 @@
   <div id="app30">
     <child :my-message="message"></child>
   </div>
+-->
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>
