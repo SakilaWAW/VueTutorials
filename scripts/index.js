@@ -925,3 +925,122 @@ var v34 = new Vue({
     'parent-child': parentChild
   }
 });
+
+/**
+ * 10.6 props过滤机制
+ * props可以自行过滤，如下，所有填写类型的地方都可以换为String,Number,Object,Boolean,Array,Symbol,Function这7种。
+ * @type {Vue}
+ */
+var v35 = new Vue({
+  el: '#app35',
+  data: {
+    message: 'v35 message'
+  },
+  components: {
+    'my-component': {
+      props: {
+        propA: String,//限定类型 注意首字母大写
+        propB: [String,Number],//限定多种类型
+        propC: {//限定类型+设定默认值
+          type: String,
+          default: 'default'
+        },
+        propD: {//限定类型+设置必须设置
+          type: String,
+          required: true
+        },
+        propE: {//限定类型+设定默认值(函数的方式 适合复杂数据逻辑)
+          type: String,
+          default: function(){
+            return reverseString('PropE');
+          }
+        },
+        propF: {//自定义过滤方法`return false`时抛出警告(但也只是警告)
+          validator: function(val){
+            return val.length > 3;
+          }
+        }
+      },
+      template: '<p>\
+      propA: {{ propA }}<br>\
+      propB: {{ propB }}<br>\
+      propC: {{ propC }}<br>\
+      propD: {{ propD }}<br>\
+      propE: {{ propE }}<br>\
+      propF: {{ propF }}<br>\
+      </p>'
+    }
+  }
+});
+
+/**
+ * > 子组件的class和style属性是经过优化的，使用时会自动融合父组件的对应属性，而其他属性则有可能被覆盖，要注意！
+ */
+
+/**
+ * 10.7 父子组件之间的通信
+ * 一句话概括就是`props down,events up`:父到子用props，子到父用抛出事件。虽然很不准确，但可以简单理解为`$on=>addEventListener`，`$emit=>dispatchEvent`。一个例子如下:
+ *
+ * > 要注意的是，这样做之后父子之间就完全解耦了。子组件干自己的事，最后用$emit抛出一个increment事件，然后在外面用@increment定义截取increment事件之后的操作。父子分离，可喜可贺。
+ *
+ * ？？？绑定原生事件？？？
+ * @type {Object}
+ */
+var CounterComponent = {
+  template: '<button @click="increase">{{ count }}</button>',
+  data: function(){
+    return {
+      count: 0
+    }
+  },
+  methods: {
+    increase: function(){
+      this.count += 1;
+      this.$emit('increment');
+    }
+  }
+}
+
+var v36 = new Vue({
+  el: '#app36',
+  data: {
+    totalCount: 0
+  },
+  methods: {
+    increaseTotal: function(){
+      this.totalCount += 1;
+    }
+  },
+  components: {
+    'my-component': CounterComponent
+  }
+});
+
+/**
+ * 10.8 sync关键字的复活
+ * 曾经有个关键字叫做sync，它提供了父子控件之间数据的双向绑定，但是这不符合我们单向绑定的优良特性。所以就被废弃了。2.3.0版本之后，对其进行了优化使其复生了，现在的sync是一个语法糖，在变异的时候会被扩展:
+ * `<x :xx.sync="xxx"></x>`=>`<x :xx="xxx" @update:xx="val=> xx = val"></x>`即增加了一个监听，在子组件内只要使用$emit('update:xx', 新值)即可更新父组件，这样方便理解又可以在双向绑定的时候凸显出来，易查错。
+ *
+ * @type {Vue}
+ */
+var v37 = new Vue({
+  el: '#app37',
+  data: {
+    count: 0
+  },
+  components: {
+    comp: {
+      props: ['initCount'],
+      template: '<button @click="increase">{{ count }}</button>',
+      methods: {
+        increase: function(){
+          this.count += 1;
+          this.$emit('update:initCount', this.count);
+        }
+      },
+      data: function(){
+        return { count: this.initCount };
+      }
+    }
+  },
+});

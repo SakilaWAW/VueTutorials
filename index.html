@@ -260,6 +260,25 @@
     <parent-child :init-count="initCount"></parent-child>
     <p>app34.initCount={{ initCount }}</p>
   </div>
+  <div id="app35">
+    <my-component
+      :prop-a="message"
+      :prop-b="1+1"
+      prop-c="propc message"
+      :prop-d="message"
+      prop-f="propf message">
+      <!--故意不设置:prop-e-->
+    </my-component>
+  </div>
+  <div id="app36">
+    <my-component @increment="increaseTotal"></my-component>
+    <my-component @increment="increaseTotal"></my-component>
+    <p>totalCount: {{ totalCount }}</p>
+  </div>
+  <div id="app37">
+    <comp :init-count.sync="count"></comp>
+    <p>app37.count: {{ count }}</p>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>
