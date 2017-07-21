@@ -279,6 +279,17 @@
     <comp :init-count.sync="count"></comp>
     <p>app37.count: {{ count }}</p>
   </div>
+  <div id="app38">
+    Price:<cash-comp v-model="price"></cash-comp><br>
+    Tax:<cash-comp v-model="tax"></cash-comp><br>
+    Shipping:<cash-comp v-model="shipping"></cash-comp><br>
+    Discount:<cash-comp v-model="discount"></cash-comp><br>
+    <p>Total: {{ totalCost }}</p>
+  </div>
+  <div id="app39">
+    Young:<young-brother></young-brother><br>
+    Old:<old-brother></old-brother>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

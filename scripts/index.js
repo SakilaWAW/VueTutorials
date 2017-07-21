@@ -1044,3 +1044,103 @@ var v37 = new Vue({
     }
   },
 });
+
+/**
+ * 10.9 自定义事件的表单组件
+ * 在表单中常常使用的`v-model`其实是一个语法糖，会自动转换:
+ * <input v-model="xx">=><input :value="xx" @input="xx=$event.target.value">
+ * 所以不用v-model的话一样可以用:value+@input的形式来实现。由此我们就可以通过更改input事件自定义输入之后的动作。
+ * 要实现v-model，必须要:接受一个value属性+再有新值的时候触发input事件。
+ *
+ * > 我们会发现即使要再加上十个自定义组件标签也不用更改自定义组件中的内容，只需要在根Vue对象添加对应数据并通过`v-model`绑定到自定义组件上即可。这就是组件的魅力。
+ *
+ * @type {Vue}
+ */
+var v38 = new Vue({
+  el: '#app38',
+  data: {
+    price: 0,
+    tax: 0,
+    shipping: 0,
+    discount: 0
+  },
+  computed: {
+    totalCost: function(){
+      return this.price+this.tax+this.shipping-this.discount;
+    }
+  },
+  components: {
+    'cash-comp': {
+      template: '\
+        <span>\
+          $\
+          <input \
+            ref="input" \
+            :value="value" \
+            @input="updateValue($event.target.value)">\
+        </span>',
+      props: ['value'],
+      methods: {
+        updateValue: function(value){
+          // 使用emit抛出事件
+          if(this.checkValue(value)){
+            this.$emit('input', Number(value));
+          }
+        },
+        checkValue: function(value){
+          //这里做数据的规则判断
+          return true;
+        }
+      }
+    },
+  }
+});
+
+/**
+ * 10.10 value冲突
+ * 在一些组件中，value是有别的用途的，想自定义v-model的话也要用value属性，这就重复了!可以用model属性来解决问题。使用方式为`model:{prop?: xx, event?: xxx}`这样的话即使使用v-model，之后也会被转换为::`xx:绑定值 @xxx:绑定方法`相当于为input和value换了个名字，这样再使用value就不会重复啦~
+ *
+ */
+
+/**
+ * 10.11 Bus消息总线
+ * 非父子组件之间很难通信，一般用一个中间的消息总线(一个空的vue对象)，然后在其中用$on和$emit来监听和触发事件。但是这样一来如果事件中要改变内部的data就麻烦了。？？？如下是一个很蠢的解决方案。？？？简单场景可以用消息总线，复杂之后一定使用vuex等框架。
+ *
+ * @type {Vue}
+ */
+//消息总线
+var bus = new Vue();
+
+var v39 = new Vue({
+  el: '#app39',
+  components: {
+    'old-brother': {
+      template: '<button @click="addYoung">{{ count }}</button>',
+      data: function(){
+        return {count: 0};
+      },
+      methods: {
+        addYoung: function(){
+          bus.$on('addOld', (num)=>{
+            this.count += num;
+          });
+          bus.$emit('addYoung', 1);
+        }
+      }
+    },
+    'young-brother': {
+      template: '<button @click="addOld">{{ count }}</button>',
+      data: function(){
+        return {count:0};
+      },
+      methods: {
+        addOld: function(){
+          bus.$on('addYoung', (num)=>{
+            this.count += num;
+          });
+          bus.$emit('addOld', 1);
+        }
+      }
+    }
+  }
+});
