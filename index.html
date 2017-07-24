@@ -290,6 +290,30 @@
     Young:<young-brother></young-brother><br>
     Old:<old-brother></old-brother>
   </div>
+  <div id="app40">
+    <h1>父模板h1</h1>
+    <comp>
+      <p>父模板p</p>
+    </comp>
+  </div>
+  <div id="app41">
+    <comp>
+      <h1 slot="header">父模板header</h1>
+      <h1 slot="footer">父模板footer</h1>
+    </comp>
+  </div>
+  <div id="app42">
+    <comp>
+      <template slot="item" scope="props">
+        <li>{{ props.text }}</li>
+      </template>
+    </comp>
+  </div>
+  <div id="app43">
+    <keep-alive>
+      <component :is="currentChild"></component>
+    </keep-alive>
+  </div>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

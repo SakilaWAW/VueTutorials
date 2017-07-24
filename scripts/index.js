@@ -1125,7 +1125,7 @@ var v39 = new Vue({
         });
       },
       methods: {
-        addYoung: function(){
+        addYoung: ()=>{
           bus.$emit('addYoung', 1);
         }
       }
@@ -1141,10 +1141,108 @@ var v39 = new Vue({
         });
       },
       methods: {
-        addOld: function(){
+        addOld: ()=>{
           bus.$emit('addOld', 1);
         }
       }
     }
+  }
+});
+
+/**
+ * > 父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译。经常会碰到:`<comp v-show="childProperty"></comp>`的形式，在父组件作用域绑定子组件的数据是不行的!父控件不应该知道子控件的属性，这是为了组件化解耦考虑。如果要绑定子组件属性到子组件上请在子组件的template里面写。
+ */
+
+/**
+ * 10.12.1 基本slot的使用
+ * slot的作用时做父子组件的融合，学名叫内容分发。当我们使用组件的时候，可能会想要在子组件模板以外加一些东西，这些东西想写在父组件中。这时候就需要在子组件模板中使用slot进行占位，这样就可以让vue在编译模板的时候将父组件内容分发到子组件模板中(当然也可以设置默认值)。注意，如果没有slot，父组件插在子组件中的内容会被丢弃。
+ *
+ * @type {Vue}
+ */
+var v40 = new Vue({
+  el: '#app40',
+  components: {
+    comp: {
+      template: '\
+      <div>\
+        <h1 v-show="seen">子模板h1</h1>\
+        <slot>无分发内容时显示此条默认语句。</slot>\
+      </div>\
+      ',
+      data: function(){
+        return { seen: true };
+      }
+    }
+  }
+});
+
+/**
+ * 10.12.2 具名slot的使用
+ * slot也可以指定名称使结构更清晰，使用方式如下。
+ *
+ * @type {Vue}
+ */
+var v41 = new Vue({
+  el: '#app41',
+  components: {
+    comp: {
+      template: '\
+      <div>\
+        <header>\
+          <slot name="header"></slot>\
+        </header>\
+        <body>\
+          <slot>默认的body</slot>\
+        </body>\
+        <footer>\
+          <slot name="footer"></slot>\
+        </footer>\
+      </div>\
+      ',
+    }
+  }
+});
+
+/**
+ * 10.12.3 传值slot(2.1.0新增)
+ * 1.在子组件模板中使用slot，向传什么属性就写在标签里。
+ * 2.在父组件模板中使用`<template scope="props">`的语法就可以在父组件的子组件范围内尽情使用props这个数据，如props.text就会对应子组件模板内声明的:text变量。
+ * 下面是一个应用传值slot实现列表组件的经典例子。
+ *
+ * @type {Vue}
+ */
+var v42 = new Vue({
+  el: '#app42',
+  components: {
+    comp: {
+      template:'\
+      <ul>\
+        <slot name="item" v-for="todo in todos" :text="todo.text">备用内容！</slot>\
+      </ul>\
+      ',
+      data: function(){
+        return {
+          todos: [{text:'todo1'},{text:'todo2'},{text:'todo3'}]
+        };
+      }
+    }
+  }
+});
+
+/**
+ * 10.13 组件动态切换
+ * 活用is+component保留标签可以实现组件的动态切换，如下(要注意currentChild赋值为字符串!)，推测可以结合slot完成更复杂的设计。使用<keep-alive>包裹子组件还可以实现切换间组件缓存。
+ *
+ * @type {Vue}
+ */
+var v43 = new Vue({
+  el: '#app43',
+  data: {
+    currentChild: 'comp1'
+  },
+  components: {
+    comp1: {template:'<p>这是组件1</p>'},
+    comp2: {template:'<p>这是组件2</p>'},
+    comp3: {template:'<p>这是组件3</p>'}
   }
 });
