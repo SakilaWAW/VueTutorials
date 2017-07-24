@@ -1104,7 +1104,7 @@ var v38 = new Vue({
 
 /**
  * 10.11 Bus消息总线
- * 非父子组件之间很难通信，一般用一个中间的消息总线(一个空的vue对象)，然后在其中用$on和$emit来监听和触发事件。但是这样一来如果事件中要改变内部的data就麻烦了。？？？如下是一个很蠢的解决方案。？？？简单场景可以用消息总线，复杂之后一定使用vuex等框架。
+ * 非父子组件之间很难通信，一般用一个中间的消息总线(一个空的vue对象)，然后在其中用$on和$emit来监听和触发事件。但是这样一来如果事件中要改变内部的data就麻烦了。简单场景可以用消息总线，复杂之后一定使用vuex等框架。
  *
  * @type {Vue}
  */
@@ -1119,11 +1119,13 @@ var v39 = new Vue({
       data: function(){
         return {count: 0};
       },
+      created: function(){
+        bus.$on('addOld', (num)=>{
+          this.count += num;
+        });
+      },
       methods: {
         addYoung: function(){
-          bus.$on('addOld', (num)=>{
-            this.count += num;
-          });
           bus.$emit('addYoung', 1);
         }
       }
@@ -1133,11 +1135,13 @@ var v39 = new Vue({
       data: function(){
         return {count:0};
       },
+      created: function(){
+        bus.$on('addYoung', (num)=>{
+          this.count += num;
+        });
+      },
       methods: {
         addOld: function(){
-          bus.$on('addYoung', (num)=>{
-            this.count += num;
-          });
           bus.$emit('addOld', 1);
         }
       }
