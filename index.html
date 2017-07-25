@@ -314,6 +314,23 @@
       <component :is="currentChild"></component>
     </keep-alive>
   </div>
+  <div id="app44">
+    <comp inline-template>
+      <div>
+        <p>这是内联模板哟</p>
+        <p>不是分发内容哟</p>
+        <p>{{ message }}</p>
+      </div>
+    </comp>
+  </div>
+  <div id="app45">
+    <my-template-component></my-template-component>
+  </div>
+  <script type="text/x-template" id="my-template">
+    <div>
+      <p>这是x-template实现的组件模板哟~</p>
+    </div>
+  </script>
   <script src="scripts/vue.js" charset="utf-8"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.4/lodash.min.js"></script>

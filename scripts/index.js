@@ -1259,3 +1259,61 @@ var v43 = new Vue({
  * > 使用ref属性可以为组件命别名，以便在程序中取得组件，假设`ref="profile"`则我们可以用vm.$ref.profile得到此组件，也可以和v-for一起用，这时取到的就是一个数组。
  * 注意！$refs 只在组件渲染完成后才填充，并且它是非响应式的。它仅仅作为一个直接访问子组件的应急方案——应当避免在模版或计算属性中使用 $refs。
  */
+
+/**
+ * ？？？异步组件？？？
+ */
+
+/**
+ * 10.16 组件命名约定
+ * js中命名一般有3中，`kebab-case、camelCase和PascalCase`这里给出结论:
+ * 1. 在html模板中始终使用kebab-case
+ * 2. 在字符串模板中不限定kebab-case，如果组件声明为kebab-case则只可以用kebab-case，如果组件声明为camelCase则可以用kebab-case和camelCase，如果时PascalCase则三种都可以用。注意这只是在字符串模板中！
+ * 总而言之kebab-case用在模板中总没错，PascalCase用在声明中最通用。
+ *
+ * > 如果组件模板中不包含slot，可以直接用<comp/>闭合。这是在字符串模板中而言!html模板可不认这一套。
+ */
+
+/**
+ * 10.17.1 递归组件
+ * 可以在组件内部声明name，再在template中使用这个name即可实现递归，全局变量声明的时候会默认把名字赋予name属性，但是用递归要记着设置出口(用v-if)，不然会栈溢出。
+ *
+ * 10.17.2 循环引用组件
+ * 循环引用即a依赖b，b又依赖a，这样会形成死循环。举个例子:a组件的模板中有<b>组件标签，而b组件的模板中同样有<a>，仅在vue中的时候时没有关系的，框架会帮你自动优化，但是如果用.vue文件+webpack或者browserify的形式就会出问题，如果想解决这个问题就得手动在一个组件的created声明周期函数中用require函数提前引入一方(`this.$options.components.xxx = require('./xxx.vue')`)，循环已解，问题解决。
+ *
+ */
+
+/**
+ * *10.18.1 内联模板
+ * 使用inline-template可以解决子组件模板太复杂不好写的问题，写法如下。但是!这样父组件和子组件的作用域会很别扭，最好使用.vue文件+template的形式。
+ *
+ * @type {Vue}
+ */
+var v44 = new Vue({
+  el: '#app44',
+  components: {
+    comp: {
+      data: function(){
+        return {message: '这里绑定了子组件数据'};
+      }
+    }
+  }
+});
+
+/**
+ * *10.18.2 x-template
+ * 另一种实现模板的方式。但是也最好不要用，因为它使组件结构混乱，最好用.vue+template的形式。
+ *
+ * @type {Vue}
+ */
+var v45 = new Vue({
+  el: '#app45',
+  components: {
+    'my-template-component': {template: '#my-template'}
+  }
+});
+
+/**
+ * 10.19 使用v-once缓存
+ * 面对"大量"的静态内容的时候，请用v-once指令进行内容缓存。使用方式就是在模板中的根div上加上v-once，如`<div v-once></div>`
+ */
